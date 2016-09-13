@@ -1,0 +1,13 @@
+- Fenêtre de paramètrage pour choisir le Device
+- Vérification de la dispo du fichier avant enregistrement
+- Enregistrement en reprise après pause
+- Conversion MP3 dès disponibilité
+- Réglage de l'enregistrement des fichiers
+- Intégrer les librairies au démarrage
+
+V2
+- Détection des mises à jour
+- Log des activités
+
+V3
+- Mises à jour automatiques
