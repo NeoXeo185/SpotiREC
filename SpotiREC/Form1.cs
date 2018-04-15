@@ -17,42 +17,34 @@ namespace SpotiREC
 {
     public partial class Main : Form
     {
+        private SettingsForm settingsForm;
+
         public static string logPath = Application.StartupPath + @"\SpotiREC_log.txt";
-        public string libavPath = @"C:\youdl\";
+        private string savePath = "";
+        private string libavPath = @"C:\youdl\";
         private string lastArtistName = "";
         private string lastTrackName = "";
         System.Timers.Timer timer;
         bool recordOnPlay = false;
 
         // CSCore Variables
-        private const CaptureMode CaptureMode = SpotiREC.CaptureMode.LoopbackCapture;
-
-        private MMDevice _selectedDevice;
         private WasapiCapture _soundIn;
         private IWriteable _writer;
         private readonly GraphVisualization _graphVisualization = new GraphVisualization();
         private IWaveSource _finalSource;
 
-        public MMDevice SelectedDevice
-        {
-            get { return _selectedDevice; }
-            set
-            {
-                _selectedDevice = value;
-                if (value != null)
-                {
-                    btnStart.Enabled = true;
-                    BT_RecordOnPlay.Enabled = true;
-                }
-            }
-        }
-
         public Main()
         {
             InitializeComponent();
+
+            settingsForm = new SettingsForm();
+
             renderTransparent(LB_Status);
             renderTransparent(LB_Position);
+            renderTransparent(BT_Record);
             renderTransparent(BT_RecordOnPlay);
+            renderTransparent(BT_Stop);
+            renderTransparent(BT_Convert);
             renderTransparent(BT_Settings);
         }
 
@@ -60,11 +52,15 @@ namespace SpotiREC
         {
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.High;
 
+            ToolTip tt1 = new ToolTip();
+            tt1.SetToolTip(BT_RecordOnPlay, "Smart Spotify audio recording");
+            tt1.SetToolTip(BT_Record, "Record sound from selected device");
+            tt1.SetToolTip(BT_Convert, "Convert all files from the selected directory from WAV to MP3");
+            tt1.SetToolTip(BT_Stop, "Stop the recording");
+
             timer = new System.Timers.Timer(1000);
             timer.Elapsed += MainTimer_Tick;
             timer.Start();
-
-            RefreshDevices();
         }
 
         private void MainTimer_Tick(object sender, EventArgs e)
@@ -127,7 +123,7 @@ namespace SpotiREC
                 }
                 else // Song is playing
                 {          
-                    if (whr.length - whr.position < 5) timer.Interval = 300;
+                    if (whr.length - whr.position < 3) timer.Interval = 300;
                     else if (MainTimer.Interval != 1000) timer.Interval = 1000;
 
                     if (lastArtistName != whr.artistName || lastTrackName != whr.trackName)
@@ -136,7 +132,7 @@ namespace SpotiREC
                         if (recordOnPlay)
                         {
                             StopCapture();
-                            StartCapture(Application.StartupPath + "\\" + strToFile(whr.artistName + " - " + whr.trackName + ".wav"));
+                            StartCapture(savePath + "\\" + strToFile(whr.artistName + " - " + whr.trackName + ".wav"));
                         }
 
                         if (LB_Status.InvokeRequired)
@@ -161,45 +157,25 @@ namespace SpotiREC
             }
         }
 
-        private void RefreshDevices()
-        {
-            deviceList.Items.Clear();
-
-            using (var deviceEnumerator = new MMDeviceEnumerator())
-            using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(
-                CaptureMode == CaptureMode.Capture ? DataFlow.Capture : DataFlow.Render, DeviceState.Active))
-            {
-                foreach (var device in deviceCollection)
-                {
-                    var deviceFormat = WaveFormatFromBlob(device.PropertyStore[
-                        new PropertyKey(new Guid(0xf19f064d, 0x82c, 0x4e27, 0xbc, 0x73, 0x68, 0x82, 0xa1, 0xbb, 0x8e, 0x4c), 0)].BlobValue);
-
-                    var item = new ListViewItem(device.FriendlyName) { Tag = device };
-                    item.SubItems.Add(deviceFormat.Channels.ToString(CultureInfo.InvariantCulture));
-
-                    deviceList.Items.Add(item);
-                }
-            }
-        }
-
         private void StartCapture(string fileName)
         {
-            if (SelectedDevice == null)
+            if (settingsForm.SelectedDevice == null)
                 return;
 
-            if (CaptureMode == CaptureMode.Capture)
-                _soundIn = new WasapiCapture();
-            else
-                _soundIn = new WasapiLoopbackCapture();
-
-            _soundIn.Device = SelectedDevice;         
+            _soundIn = new WasapiLoopbackCapture();
+            _soundIn.Device = settingsForm.SelectedDevice;
             _soundIn.Initialize();
+
+            // Check file name availability
+            string finalName = Path.ChangeExtension(fileName, null);
+            while (File.Exists(finalName + ".wav"))
+                finalName += "_";
+            finalName += ".wav";
 
             var soundInSource = new SoundInSource(_soundIn);
             var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
             _finalSource = singleBlockNotificationStream.ToWaveSource();
-            _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
-            // Simplify the file name
+            _writer = new WaveWriter(finalName, _finalSource.WaveFormat);
 
             byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
             soundInSource.DataAvailable += (s, e) =>
@@ -219,18 +195,6 @@ namespace SpotiREC
             _graphVisualization.AddSamples(e.Left, e.Right);
         }
 
-        private static WaveFormat WaveFormatFromBlob(Blob blob)
-        {
-            if (blob.Length == 40)
-                return (WaveFormat)Marshal.PtrToStructure(blob.Data, typeof(WaveFormatExtensible));
-            return (WaveFormat)Marshal.PtrToStructure(blob.Data, typeof(WaveFormat));
-        }
-
-        private void btnRefreshDevices_Click(object sender, EventArgs e)
-        {
-            RefreshDevices();
-        }
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog
@@ -242,8 +206,8 @@ namespace SpotiREC
             if (sfd.ShowDialog(this) == DialogResult.OK)
             {
                 StartCapture(sfd.FileName);
-                btnStart.Enabled = false;
-                btnStop.Enabled = true;
+                BT_Record.Enabled = false;
+                BT_Stop.Enabled = true;
             }
         }
 
@@ -266,21 +230,9 @@ namespace SpotiREC
 
                 if (!recordOnPlay)
                 {
-                    btnStop.Enabled = false;
-                    btnStart.Enabled = true;
+                    BT_Stop.Enabled = false;
+                    BT_Record.Enabled = true;
                 }
-            }
-        }
-
-        private void deviceList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (deviceList.SelectedItems.Count > 0)
-            {
-                SelectedDevice = (MMDevice)deviceList.SelectedItems[0].Tag;
-            }
-            else
-            {
-                SelectedDevice = null;
             }
         }
 
@@ -318,9 +270,9 @@ namespace SpotiREC
 
         private void button1_Click(object sender, EventArgs e)
         {
-            StartCapture(Application.StartupPath + "\\" + strToFile(lastArtistName + " - " + lastTrackName + ".wav"));
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
+            StartCapture(savePath + "\\" + strToFile(lastArtistName + " - " + lastTrackName + ".wav"));
+            BT_Record.Enabled = false;
+            BT_Stop.Enabled = true;
             BT_RecordOnPlay.Enabled = false;
             recordOnPlay = true;
         }
@@ -332,7 +284,7 @@ namespace SpotiREC
 
         private void convertToMP3 ()
         {
-            foreach (string file in Directory.GetFiles(Application.StartupPath + "\\", "*.wav"))
+            foreach (string file in Directory.GetFiles(savePath + "\\", "*.wav"))
             {
                 try
                 {
@@ -354,10 +306,10 @@ namespace SpotiREC
             }
         }
 
-        private string toTimeString(float seconds, float length)
+        private string toTimeString(float position, float length)
         {
-            if (seconds < length)
-                return TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss") + "/" + TimeSpan.FromSeconds(length).ToString(@"mm\:ss");
+            if (position < length)
+                return TimeSpan.FromSeconds(position).ToString(@"mm\:ss") + "/" + TimeSpan.FromSeconds(length).ToString(@"mm\:ss");
             else
                 return TimeSpan.FromSeconds(length).ToString(@"mm\:ss") + "/" + TimeSpan.FromSeconds(length).ToString(@"mm\:ss");
         }
@@ -370,11 +322,14 @@ namespace SpotiREC
             c.Location = pos;
         }
 
-    }
-
-    public enum CaptureMode
-    {
-        Capture,
-        LoopbackCapture
+        private void BT_Settings_Click(object sender, EventArgs e)
+        {
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+                savePath = settingsForm.savePath;
+                BT_RecordOnPlay.Enabled = true;
+                BT_Record.Enabled = true;
+            }
+        }
     }
 }

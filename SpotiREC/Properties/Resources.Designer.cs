@@ -63,6 +63,36 @@ namespace SpotiREC.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ic_play_arrow_white_18dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_play_arrow_white_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_stop_white_18dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_stop_white_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_surround_sound_white_18dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_surround_sound_white_18dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap record_on_play_white {
             get {
                 object obj = ResourceManager.GetObject("record_on_play_white", resourceCulture);

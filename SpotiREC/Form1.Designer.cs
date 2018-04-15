@@ -33,17 +33,13 @@
             this.LB_Status = new System.Windows.Forms.Label();
             this.LB_Position = new System.Windows.Forms.Label();
             this.PlayingProgress = new System.Windows.Forms.ProgressBar();
-            this.btnRefreshDevices = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnConvert = new System.Windows.Forms.Button();
-            this.btnStart = new System.Windows.Forms.Button();
+            this.BT_Record = new System.Windows.Forms.Button();
+            this.BT_Stop = new System.Windows.Forms.Button();
+            this.BT_Settings = new System.Windows.Forms.Button();
             this.BT_RecordOnPlay = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.BT_Settings = new System.Windows.Forms.Button();
-            this.LV_DeviceList = new System.Windows.Forms.ListView();
-            this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnChannels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.BT_Convert = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,7 +54,7 @@
             this.LB_Status.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LB_Status.Font = new System.Drawing.Font("Roboto", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Status.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LB_Status.Location = new System.Drawing.Point(325, 9);
+            this.LB_Status.Location = new System.Drawing.Point(4, 10);
             this.LB_Status.Name = "LB_Status";
             this.LB_Status.Size = new System.Drawing.Size(77, 18);
             this.LB_Status.TabIndex = 0;
@@ -70,7 +66,7 @@
             this.LB_Position.BackColor = System.Drawing.Color.Transparent;
             this.LB_Position.Font = new System.Drawing.Font("Roboto Condensed", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LB_Position.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LB_Position.Location = new System.Drawing.Point(325, 27);
+            this.LB_Position.Location = new System.Drawing.Point(4, 28);
             this.LB_Position.Name = "LB_Position";
             this.LB_Position.Size = new System.Drawing.Size(16, 15);
             this.LB_Position.TabIndex = 0;
@@ -78,36 +74,11 @@
             // 
             // PlayingProgress
             // 
-            this.PlayingProgress.Location = new System.Drawing.Point(321, 199);
+            this.PlayingProgress.Location = new System.Drawing.Point(0, 245);
             this.PlayingProgress.Name = "PlayingProgress";
-            this.PlayingProgress.Size = new System.Drawing.Size(344, 10);
+            this.PlayingProgress.Size = new System.Drawing.Size(435, 10);
             this.PlayingProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.PlayingProgress.TabIndex = 1;
-            // 
-            // btnRefreshDevices
-            // 
-            this.btnRefreshDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshDevices.Location = new System.Drawing.Point(207, -119);
-            this.btnRefreshDevices.Name = "btnRefreshDevices";
-            this.btnRefreshDevices.Size = new System.Drawing.Size(107, 23);
-            this.btnRefreshDevices.TabIndex = 6;
-            this.btnRefreshDevices.Text = "Refresh devices";
-            this.btnRefreshDevices.UseVisualStyleBackColor = true;
-            this.btnRefreshDevices.Click += new System.EventHandler(this.btnRefreshDevices_Click);
-            // 
-            // btnStop
-            // 
-            this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(227, 177);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(87, 23);
-            this.btnStop.TabIndex = 5;
-            this.btnStop.Text = "Stop recording";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // timer1
             // 
@@ -115,42 +86,68 @@
             this.timer1.Interval = 20;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnConvert
+            // BT_Record
             // 
-            this.btnConvert.Location = new System.Drawing.Point(209, 9);
-            this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(105, 23);
-            this.btnConvert.TabIndex = 9;
-            this.btnConvert.Text = "Convert to MP3";
-            this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            this.BT_Record.BackColor = System.Drawing.Color.Transparent;
+            this.BT_Record.BackgroundImage = global::SpotiREC.Properties.Resources.ic_play_arrow_white_18dp;
+            this.BT_Record.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BT_Record.Enabled = false;
+            this.BT_Record.FlatAppearance.BorderSize = 0;
+            this.BT_Record.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Blue;
+            this.BT_Record.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BT_Record.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BT_Record.Location = new System.Drawing.Point(33, 216);
+            this.BT_Record.Name = "BT_Record";
+            this.BT_Record.Size = new System.Drawing.Size(26, 23);
+            this.BT_Record.TabIndex = 11;
+            this.BT_Record.UseVisualStyleBackColor = false;
+            this.BT_Record.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // btnStart
+            // BT_Stop
             // 
-            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Enabled = false;
-            this.btnStart.Location = new System.Drawing.Point(134, 177);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(87, 23);
-            this.btnStart.TabIndex = 4;
-            this.btnStart.Text = "Start recording";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.BT_Stop.BackColor = System.Drawing.Color.Transparent;
+            this.BT_Stop.BackgroundImage = global::SpotiREC.Properties.Resources.ic_stop_white_18dp;
+            this.BT_Stop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BT_Stop.Enabled = false;
+            this.BT_Stop.FlatAppearance.BorderSize = 0;
+            this.BT_Stop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Blue;
+            this.BT_Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BT_Stop.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BT_Stop.Location = new System.Drawing.Point(59, 216);
+            this.BT_Stop.Name = "BT_Stop";
+            this.BT_Stop.Size = new System.Drawing.Size(26, 23);
+            this.BT_Stop.TabIndex = 10;
+            this.BT_Stop.UseVisualStyleBackColor = false;
+            this.BT_Stop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // BT_Settings
+            // 
+            this.BT_Settings.BackColor = System.Drawing.Color.Transparent;
+            this.BT_Settings.BackgroundImage = global::SpotiREC.Properties.Resources.settings_white;
+            this.BT_Settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BT_Settings.FlatAppearance.BorderSize = 0;
+            this.BT_Settings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightSteelBlue;
+            this.BT_Settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
+            this.BT_Settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BT_Settings.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BT_Settings.Location = new System.Drawing.Point(404, 8);
+            this.BT_Settings.Name = "BT_Settings";
+            this.BT_Settings.Size = new System.Drawing.Size(23, 20);
+            this.BT_Settings.TabIndex = 8;
+            this.BT_Settings.UseVisualStyleBackColor = false;
+            this.BT_Settings.Click += new System.EventHandler(this.BT_Settings_Click);
             // 
             // BT_RecordOnPlay
             // 
-            this.BT_RecordOnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.BT_RecordOnPlay.BackColor = System.Drawing.Color.Transparent;
-            this.BT_RecordOnPlay.BackgroundImage = global::SpotiREC.Properties.Resources.record_on_play_white;
+            this.BT_RecordOnPlay.BackgroundImage = global::SpotiREC.Properties.Resources.ic_surround_sound_white_18dp;
             this.BT_RecordOnPlay.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BT_RecordOnPlay.Enabled = false;
             this.BT_RecordOnPlay.FlatAppearance.BorderSize = 0;
             this.BT_RecordOnPlay.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Blue;
             this.BT_RecordOnPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BT_RecordOnPlay.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BT_RecordOnPlay.Location = new System.Drawing.Point(328, 170);
+            this.BT_RecordOnPlay.Location = new System.Drawing.Point(7, 216);
             this.BT_RecordOnPlay.Name = "BT_RecordOnPlay";
             this.BT_RecordOnPlay.Size = new System.Drawing.Size(26, 23);
             this.BT_RecordOnPlay.TabIndex = 8;
@@ -160,66 +157,40 @@
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(321, -1);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(344, 211);
+            this.pictureBox1.Size = new System.Drawing.Size(435, 255);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
-            // BT_Settings
+            // BT_Convert
             // 
-            this.BT_Settings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.BT_Settings.BackColor = System.Drawing.Color.Transparent;
-            this.BT_Settings.BackgroundImage = global::SpotiREC.Properties.Resources.settings_white;
-            this.BT_Settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BT_Settings.FlatAppearance.BorderSize = 0;
-            this.BT_Settings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightSteelBlue;
-            this.BT_Settings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.RoyalBlue;
-            this.BT_Settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BT_Settings.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.BT_Settings.Location = new System.Drawing.Point(635, 7);
-            this.BT_Settings.Name = "BT_Settings";
-            this.BT_Settings.Size = new System.Drawing.Size(23, 20);
-            this.BT_Settings.TabIndex = 8;
-            this.BT_Settings.UseVisualStyleBackColor = false;
-            // 
-            // LV_DeviceList
-            // 
-            this.LV_DeviceList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnName,
-            this.columnChannels});
-            this.LV_DeviceList.Location = new System.Drawing.Point(12, 38);
-            this.LV_DeviceList.MultiSelect = false;
-            this.LV_DeviceList.Name = "LV_DeviceList";
-            this.LV_DeviceList.Size = new System.Drawing.Size(302, 133);
-            this.LV_DeviceList.TabIndex = 10;
-            this.LV_DeviceList.UseCompatibleStateImageBehavior = false;
-            this.LV_DeviceList.View = System.Windows.Forms.View.Details;
-            // 
-            // columnName
-            // 
-            this.columnName.Text = "Name";
-            this.columnName.Width = 237;
-            // 
-            // columnChannels
-            // 
-            this.columnChannels.Text = "Channels";
-            this.columnChannels.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.BT_Convert.BackColor = System.Drawing.Color.Transparent;
+            this.BT_Convert.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BT_Convert.FlatAppearance.BorderSize = 0;
+            this.BT_Convert.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Blue;
+            this.BT_Convert.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BT_Convert.Font = new System.Drawing.Font("Roboto Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BT_Convert.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BT_Convert.Location = new System.Drawing.Point(388, 216);
+            this.BT_Convert.Name = "BT_Convert";
+            this.BT_Convert.Size = new System.Drawing.Size(42, 23);
+            this.BT_Convert.TabIndex = 12;
+            this.BT_Convert.Text = "MP3";
+            this.BT_Convert.UseVisualStyleBackColor = false;
+            this.BT_Convert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 209);
-            this.Controls.Add(this.LV_DeviceList);
+            this.ClientSize = new System.Drawing.Size(435, 255);
+            this.Controls.Add(this.BT_Convert);
+            this.Controls.Add(this.BT_Record);
+            this.Controls.Add(this.BT_Stop);
             this.Controls.Add(this.BT_Settings);
             this.Controls.Add(this.LB_Position);
-            this.Controls.Add(this.btnConvert);
             this.Controls.Add(this.BT_RecordOnPlay);
-            this.Controls.Add(this.btnRefreshDevices);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.PlayingProgress);
             this.Controls.Add(this.LB_Status);
             this.Controls.Add(this.pictureBox1);
@@ -239,16 +210,12 @@
         private System.Windows.Forms.Label LB_Position;
         private System.Windows.Forms.ProgressBar PlayingProgress;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button btnRefreshDevices;
-        private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button BT_RecordOnPlay;
-        private System.Windows.Forms.Button btnConvert;
-        private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button BT_Settings;
-        private System.Windows.Forms.ListView LV_DeviceList;
-        private System.Windows.Forms.ColumnHeader columnName;
-        private System.Windows.Forms.ColumnHeader columnChannels;
+        private System.Windows.Forms.Button BT_Stop;
+        private System.Windows.Forms.Button BT_Record;
+        private System.Windows.Forms.Button BT_Convert;
     }
 }
 
