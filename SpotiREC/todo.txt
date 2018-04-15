@@ -2,10 +2,10 @@ OK - Fenêtre de paramètrage pour choisir le Device
 OK - Design des boutons
 OK - Définir chemins d'enregistrement
 OK - Vérification de la dispo du fichier avant enregistrement
-- Enregistrement en reprise après pause
-- Conversion MP3 dès disponibilité
-- Réglage de l'enregistrement des fichiers (Exceptions ?)
-- Intégrer les librairies au démarrage
+NOK - Enregistrement en reprise après pause
+OK Conversion MP3 dès disponibilité
+OK - Réglage de l'enregistrement des fichiers (Exceptions ?)
+OK Intégrer les librairies au démarrage
 
 V2
 - Détection des mises à jour

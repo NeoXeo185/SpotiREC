@@ -13,7 +13,7 @@ namespace SpotiREC
     class WebHelperHook
     {
         private const string ua = @"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; .NET4.0C; .NET4.0E)";
-        private const string port = ":4371";
+        private const string port = ":4380";
 
         private static string oauthToken;
         private static string csrfToken;
@@ -25,19 +25,16 @@ namespace SpotiREC
         public static WebHelperResult GetStatus()
         {
             if (oauthToken == null || oauthToken == "null")
-            {
                 SetOAuth();
-            }
+
             if (csrfToken == null || csrfToken == "null")
-            {
                 SetCSRF();
-            }
 
             string result = "";
             try
             {
                 result = GetPage(GetURL("/remote/status.json" + "?oauth=" + oauthToken + "&csrf=" + csrfToken));
-                //Debug.WriteLine(result);
+                //Debug.WriteLine(result); //Very heavy debugging log
             }
             catch (WebException ex)
             {
@@ -69,6 +66,7 @@ namespace SpotiREC
                     {
                         whr.isPlaying = line.Contains("true");
                     }// Ajout 11_09_2016 : Getting the name and the playing position
+                    // Ajout 17_09_2016 : Getting the album name
                     else if (line.Contains("\"playing_position\":"))
                     {
                             string test = line.Split(new char[] { ':', ',' })[1].Replace(" ", "");
@@ -85,6 +83,17 @@ namespace SpotiREC
                             if (line.Contains("\"name\":"))
                             {
                                 whr.trackName = (line.Replace("\"name\":", "").Split('"')[1]);
+                                break;
+                            }
+                        }
+                    }
+                    else if (line.Contains("\"album_resource\":"))
+                    {
+                        while ((line = reader.ReadLine()) != null) // Read until we find the "name" field
+                        {
+                            if (line.Contains("\"name\":"))
+                            {
+                                whr.albumName = (line.Replace("\"name\":", "").Split('"')[1]);
                                 break;
                             }
                         }
@@ -167,13 +176,17 @@ namespace SpotiREC
             {
                 hostname = new Random(Environment.TickCount).Next(100000, 100000000).ToString();
             }
-            return "https://" + hostname + ".spotilocal.com" + port + path;
+            return "http://" + hostname + ".spotilocal.com" + port + path;
         }
 
         private static string GetPage(string URL)
         {
             Debug.WriteLine("Getting page " + URL);
             WebClient w = new WebClient();
+
+            if (URL.Contains("spotilocal"))
+                w.Proxy = null;
+
             w.Headers.Add("user-agent", ua);
             w.Headers.Add("Origin", "https://open.spotify.com");
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };

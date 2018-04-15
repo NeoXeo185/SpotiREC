@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("SpotiREC")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Record Spotify with track info and MP3 conversion")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("François DELEBECQ")]
 [assembly: AssemblyProduct("SpotiREC")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

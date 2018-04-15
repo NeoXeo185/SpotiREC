@@ -12,5 +12,6 @@
 
         public string artistName = "Personne";
         public string trackName = "Rien ;)";
+        public string albumName = "Nada";
     }
 }
